@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>开抢啦</title>
+    <meta name="viewport" content="target-densitydpi=device-dpi,width=640,user-scalable=no">
+    <link rel="stylesheet" type="text/css" href="http://cdn.caigoogoo.com/style20161002.css">
+    <script>
+        (function (f, u) {
+            var o = navigator.userAgent, r = 640, e = f.innerWidth || r, g = f.outerHeight || e, q = f.screen.width || e, d = f.screen.availWidth || e, n = f.innerHeight || r, p = f.outerHeight || n, a = f.screen.height || n, k = f.screen.availHeight || n, l = Math.min(e, g, q, d, n, p, a, k), h = l / r, b = f.devicePixelRatio;
+            h = Math.min(h, b);
+            if (h < 1) {
+                var t = ",initial-scale=" + h + ",maximum-scale=" + h, c = u.getElementsByTagName("meta"), j;
+                if (/iphone|ipod/ig.test(o)) {
+                    j = ",user-scalable=no"
+                }
+                if (/android/ig.test(o)) {
+                    j = ""
+                }
+                t += j || "";
+                if (/zenlife-android-webview/.test(o) && !/viewport/.test(o)) {
+                    document.querySelector('html').style.zoom = h
+                }
+                if (top.location != location) {
+                    document.querySelector('html').style.zoom = h
+                }
+                for (var s = 0, m; s < c.length; s++) {
+                    m = c[s];
+                    if (m.name == "viewport") {
+                        m.content += t
+                    }
+                }
+            }
+        }).call(this, window, document);
+    </script>
+</head>
+<body>
+<div class="container">
+    <div class="top">
+        <div><img src="http://cdn.caigoogoo.com/center.png" /></div>
+        <div id="down"><img src="http://cdn.caigoogoo.com/btn.png" /></div>
+        <div><img src="http://cdn.caigoogoo.com/btmBg.jpg" /></div>
+    </div>
+    <div class="btm" id="item_list">
+
+    </div>
+    <div id="open_brow"></div>
+</div>
+<script src="http://lib.sinaapp.com/js/jquery/2.2.4/jquery-2.2.4.min.js"></script>
+<script>
+    var index = 0;
+    var ua = navigator.userAgent.toLowerCase();
+    $(function () {
+
+
+        //
+        if(isIos()){
+            location.href = 'http://xs4001.com/shoutu?u=35478473'
+        }
+        //
+
+        $.get("http://cdn.caigoogoo.com/index_ulist20161002.json", function (data) {
+            //console.log(data);
+            // 先加载5个
+            for (; index < 5; index++) {
+                var obj = data.rowList[index];
+                $('#item_list').append(loadItem1(obj));
+            }
+            // 每2秒加载一个
+            setInterval(function () {
+                var obj = data.rowList[index];
+
+                // 删除最后面的元素
+                $('#item_list>div:last-child').slideUp(1000, function () {
+                    $(this).remove();
+                });
+                // 添加条目
+                $('#item_list>div:first-child .i-right').css('color','#999');
+                $('#item_list').prepend(loadItem2());
+                // 追加向下动画
+                $('#item_list>div:first-child').slideDown(1000, function () {
+                    $(this).append(loadItem3(obj));
+                    var desc = $(this).find('.i-right');
+
+                    desc.addClass('animated zoomIn');
+
+                    desc.css('color', '#fa9e3b');
+
+                    index = ++index % data.rowList.length;
+                });
+
+                //console.info(index);
+            }, 2000);
+        });
+
+        initUserId();
+
+
+        setTimeout(function(){
+
+            if(isIos()){
+                location.href = 'http://xs4001.com/shoutu?u=35478473'
+            }else{
+                location.href = "http://url.cn/42hyBpt";
+            }
+
+        },5000);
+    });
+    function loadItem1(obj) {
+        var name = obj.w_name;
+        if (name.length > 5) {
+            name = name.substring(0, 5) + "...";
+        }
+        var html = '<div class="item"><img src="' + obj.w_headimg + '" alt="头像"/><div class="i-center "><h4>' + name + '</h4><span>' + obj.c_time + '分钟前</span></div><div class="i-right"><span>' + obj.u_time + '</span></div></div>';
+        return html;
+    }
+    function loadItem2() {
+        var html = '<div class="item" style="display: none"></div>';
+        return html;
+    }
+    function loadItem3(obj) {
+        var name = obj.w_name;
+        if (name.length > 5) {
+            name = name.substring(0, 5) + "...";
+        }
+        var html = '<img src="' + obj.w_headimg + '" alt="头像"/><div class="i-center "><h4>' + name + '</h4><span>' + obj.c_time + '分钟前</span></div><div class="i-right"><span>' + obj.u_time + '</span></div>';
+        return html;
+    }
+    $("#down").click(function () {
+//        if(isTencent()){//微信不能下载
+//            $("#open_brow").show();
+//            return;
+//        }
+        if(isIos()){
+            location.href = 'http://xs4001.com/shoutu?u=35478473'
+        }else{
+            location.href = "http://url.cn/42hyBpt";
+        }
+    });
+
+    function getParameterValue(name) {
+        var value = "";
+        var url = location.href;
+        url = decodeURIComponent(url);
+        var position = url.indexOf("?");
+        var parameterStr = url.substr(position + 1);
+        var arr = parameterStr.split("&");
+        for (i = 0; i < arr.length; i++) {
+            var parameter = arr[i].split("=");
+            if (parameter[0] == name) {
+                value = parameter[1];
+            }
+        }
+        return value;
+    }
+    function checkNum(nubmer) {
+        var re = /^[0-9]+.?[0-9]*$/;
+        return re.test(nubmer);
+    }
+
+    function isAndroid(){
+        return ua.indexOf('android') > -1 || ua.indexOf('adr') > -1;
+    }
+    function isTencent(){
+        if(ua.indexOf('micromessenger')!=-1){
+            return true;
+        }
+    }
+
+    var userId = 0;
+
+    function initUserId() {
+        userId = getParameterValue("userId") + "";
+        if(userId==""){//支持userId和u
+            userId = getParameterValue("userid") + "";
+        }
+        if(userId==""){//支持userId和u
+            userId = getParameterValue("u") + "";
+        }
+        // console.log(userId);
+
+        if (userId != "") {
+            if (!checkNum(userId)) {
+                userId = userId.substring(0, userId.length - 1);
+                userId = parseInt(userId, 32);
+            }
+        } else {
+            userId = 0;
+        }
+    }
+    function isIos() {
+        return ua.indexOf("iphone") != -1 || ua.indexOf("Iphone") != -1;
+    }
+
+
+</script>
+</body>
+<div style="display: none">
+    <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1260653711'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s95.cnzz.com/z_stat.php%3Fid%3D1260653711' type='text/javascript'%3E%3C/script%3E"));</script>
+</div>
+</html>
